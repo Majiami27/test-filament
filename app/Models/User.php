@@ -24,6 +24,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'status',
     ];
 
     /**
@@ -44,11 +45,17 @@ class User extends Authenticatable implements FilamentUser
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'status' => 'boolean',
     ];
 
     public function canAccessPanel(Panel $panel): bool
     {
         // return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
         return true;
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(Area::class);
     }
 }

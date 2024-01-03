@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AreaResource\Pages;
+use App\Filament\Resources\AreaResource\RelationManagers\UsersRelationManager;
 use App\Models\Area;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -79,7 +80,7 @@ class AreaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            'users' => UsersRelationManager::class,
         ];
     }
 
