@@ -18,7 +18,9 @@ class AreaResource extends Resource
 
     protected static ?string $navigationLabel = '組織管理';
 
-    protected static ?string $modelLabel = '組織管理';
+    protected static ?string $modelLabel = '場域';
+
+    protected static ?string $pluralModelLabel = '組織管理';
 
     public static function form(Form $form): Form
     {
