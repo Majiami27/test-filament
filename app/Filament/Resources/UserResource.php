@@ -3,15 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Pages\Page;
+use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -19,24 +18,46 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = '設定';
+
+    public static function getModelLabel(): string
+    {
+        return '使用者';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Toggle::make('status')
-                    ->required(),
+                Forms\Components\Section::make([
+                    Forms\Components\TextInput::make('name')
+                        ->label('名稱')
+                        ->required()
+                        ->maxLength(20),
+                    Forms\Components\TextInput::make('email')
+                        ->label('電子郵件')
+                        ->email()
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\DateTimePicker::make('email_verified_at')
+                        ->label('電子郵件驗證於')
+                        ->nullable(),
+                    Forms\Components\Toggle::make('status')
+                        ->label('狀態')
+                        ->required(),
+                ])->columns(2),
+                Forms\Components\Section::make([
+                    Forms\Components\Select::make('roles')
+                        ->label('角色')
+                        ->relationship('roles', 'name')->preload(),
+                ])->columns(1),
+                Forms\Components\Section::make([
+                    Forms\Components\TextInput::make('password')
+                        ->label('密碼')
+                        ->password()
+                        ->dehydrated(fn ($state) => filled($state))
+                        ->required(fn (Page $livewire) => ($livewire instanceof CreateRecord)),
+                ])->columns(1),
             ]);
     }
 
