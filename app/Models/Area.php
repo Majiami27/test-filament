@@ -13,4 +13,9 @@ class Area extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public function devices()
+    {
+        return $this->hasMany(Device::class, 'area_id', 'id');
+    }
 }

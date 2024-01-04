@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AreaResource\Pages;
+use App\Filament\Resources\AreaResource\RelationManagers\DevicesRelationManager;
 use App\Filament\Resources\AreaResource\RelationManagers\UsersRelationManager;
 use App\Models\Area;
 use Filament\Forms;
@@ -81,6 +82,7 @@ class AreaResource extends Resource
     {
         return [
             'users' => UsersRelationManager::class,
+            DevicesRelationManager::class,
         ];
     }
 
