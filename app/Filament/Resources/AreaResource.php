@@ -96,6 +96,7 @@ class AreaResource extends Resource
             'index' => Pages\ListAreas::route('/'),
             'create' => Pages\CreateArea::route('/create'),
             'edit' => Pages\EditArea::route('/{record}/edit'),
+            'view' => Pages\ViewArea::route('/{record}'),
         ];
     }
 }
