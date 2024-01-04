@@ -52,11 +52,12 @@ class DevicesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\AssociateAction::make()->preloadRecordSelect(),
+                Tables\Actions\AssociateAction::make()->hidden(! auth()->user()->hasRole('admin'))->preloadRecordSelect(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DissociateAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DissociateAction::make()
+                    ->hidden(! auth()->user()->hasRole('admin')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

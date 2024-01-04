@@ -37,7 +37,7 @@ class DevicePolicy
      */
     public function update(User $user, Device $device): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin']) || $user->devices()->where('devices.id', $device->id)->exists();
     }
 
     /**

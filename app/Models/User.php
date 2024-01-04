@@ -58,4 +58,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->belongsToMany(Area::class);
     }
+
+    public function devices()
+    {
+        return $this->hasManyThrough(Device::class, AreaUser::class, 'user_id', 'area_id', 'id', 'area_id');
+    }
 }

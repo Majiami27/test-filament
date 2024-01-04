@@ -36,7 +36,7 @@ class AreaPolicy
      */
     public function update(User $user, Area $area): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['admin']) || $user->areas()->where('areas.id', $area->id)->exists();
     }
 
     /**

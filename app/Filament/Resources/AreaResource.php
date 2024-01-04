@@ -30,6 +30,7 @@ class AreaResource extends Resource
             ->schema([
                 Forms\Components\Section::make('基本資料')
                     ->description('請輸入場域名稱與狀態。')
+                    ->disabled(! auth()->user()->hasRole('admin'))
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
@@ -72,7 +73,6 @@ class AreaResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -96,7 +96,6 @@ class AreaResource extends Resource
             'index' => Pages\ListAreas::route('/'),
             'create' => Pages\CreateArea::route('/create'),
             'edit' => Pages\EditArea::route('/{record}/edit'),
-            'view' => Pages\ViewArea::route('/{record}'),
         ];
     }
 }

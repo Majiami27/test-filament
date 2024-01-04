@@ -16,4 +16,19 @@ class EditArea extends EditRecord
             // Actions\DeleteAction::make(),
         ];
     }
+
+    /**
+     * @return array<Action | ActionGroup>
+     */
+    protected function getFormActions(): array
+    {
+        if (! auth()->user()->hasRole('admin')) {
+            return [];
+        }
+
+        return [
+            $this->getSaveFormAction(),
+            $this->getCancelFormAction(),
+        ];
+    }
 }
