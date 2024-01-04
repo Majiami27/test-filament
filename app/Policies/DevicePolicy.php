@@ -21,7 +21,7 @@ class DevicePolicy
     public function view(User $user, Device $device): bool
     {
         return $user->hasRole(['admin'])
-            || $user->areas()->where('id', $device->area_id)->exists();
+            || $user->areas()->where('areas.id', $device->area_id)->exists();
     }
 
     /**
