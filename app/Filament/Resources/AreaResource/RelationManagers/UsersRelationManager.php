@@ -42,7 +42,7 @@ class UsersRelationManager extends RelationManager
                 Tables\Filters\Filter::make('status')->toggle(),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()->preloadRecordSelect(),
             ])
             ->actions([
