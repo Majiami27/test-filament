@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\DeviceResource\Pages;
+use App\Filament\Resources\DeviceResource\RelationManagers;
+use App\Models\Device;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserResource extends Resource
+class DeviceResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Device::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,18 +23,23 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('mac_address')
+                    ->required()
+                    ->maxLength(30),
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
+                    ->maxLength(30),
+                Forms\Components\TextInput::make('custom_id')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
+                    ->maxLength(30),
+                Forms\Components\TextInput::make('area_id')
+                    ->numeric(),
+                Forms\Components\TextInput::make('ip')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(30),
+                Forms\Components\TextInput::make('ssid')
+                    ->required()
+                    ->maxLength(32),
                 Forms\Components\Toggle::make('status')
                     ->required(),
             ]);
@@ -44,13 +49,19 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('mac_address')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                Tables\Columns\TextColumn::make('custom_id')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('area_id')
+                    ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('ip')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('ssid')
+                    ->searchable(),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -85,9 +96,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListDevices::route('/'),
+            'create' => Pages\CreateDevice::route('/create'),
+            'edit' => Pages\EditDevice::route('/{record}/edit'),
         ];
     }
 }
