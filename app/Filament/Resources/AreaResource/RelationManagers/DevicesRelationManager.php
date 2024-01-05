@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class DevicesRelationManager extends RelationManager
@@ -75,7 +76,22 @@ class DevicesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\AssociateAction::make()->hidden(! auth()->user()->hasAnyRole(['super_admin', 'admin']))->preloadRecordSelect(),
+                Tables\Actions\AssociateAction::make()
+                    ->hidden(! auth()->user()->hasAnyRole(['super_admin', 'admin']))
+                    ->recordSelectOptionsQuery(function (Builder $query) {
+                        /**
+                         * @var \App\Models\User $user
+                         */
+                        $user = auth()->user();
+
+                        if ($user->hasRole('super_admin')) {
+                            // TODO: 應該是選擇該組織的設備
+                            return $query;
+                        }
+
+                        return $query->where('organization_id', '=', $user->id);
+                    })
+                    ->preloadRecordSelect(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
