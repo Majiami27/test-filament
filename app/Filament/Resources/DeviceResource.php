@@ -29,6 +29,11 @@ class DeviceResource extends Resource
          * @var \App\Models\User $user
          */
         $user = auth()->user();
+
+        if ($user->hasRole('super_admin')) {
+            return parent::getEloquentQuery();
+        }
+
         $organizationId = $user?->organization_id === null ? $user?->id : $user?->organization_id;
 
         return parent::getEloquentQuery()->where('organization_id', $organizationId);

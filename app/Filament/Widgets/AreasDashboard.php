@@ -23,6 +23,11 @@ class AreasDashboard extends BaseWidget
                  * @var \App\Models\User $user
                  */
                 $user = auth()->user();
+
+                if ($user->hasRole('super_admin')) {
+                    return Area::query();
+                }
+
                 $organizationId = $user?->organization_id === null ? $user?->id : $user?->organization_id;
 
                 return Area::query()->where('organization_id', $organizationId);

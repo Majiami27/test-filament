@@ -23,6 +23,11 @@ class DevicesDashboard extends BaseWidget
                  * @var \App\Models\User $user
                  */
                 $user = auth()->user();
+
+                if ($user->hasRole('super_admin')) {
+                    return Device::query();
+                }
+
                 $organizationId = $user?->organization_id === null ? $user?->id : $user?->organization_id;
 
                 return Device::query()->where('organization_id', $organizationId)->with('area');
