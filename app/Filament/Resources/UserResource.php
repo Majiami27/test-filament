@@ -11,6 +11,7 @@ use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
@@ -25,7 +26,7 @@ class UserResource extends Resource
         return '使用者';
     }
 
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    public static function getEloquentQuery(): Builder
     {
         /**
          * @var \App\Models\User $user
@@ -70,7 +71,23 @@ class UserResource extends Resource
                 Forms\Components\Section::make([
                     Forms\Components\Select::make('roles')
                         ->label('角色')
-                        ->relationship('roles', 'name')->preload(),
+                        ->relationship(
+                            name: 'roles',
+                            titleAttribute: 'name',
+                            modifyQueryUsing: function (Builder $query) {
+                                /**
+                                 * @var \App\Models\User $user
+                                 */
+                                $user = auth()->user();
+
+                                if ($user->hasRole('super_admin')) {
+                                    return $query;
+                                }
+
+                                return $query->where('name', '!=', 'super_admin');
+                            },
+                        )
+                        ->preload(),
                 ])->columns(1),
                 Forms\Components\Section::make([
                     Forms\Components\TextInput::make('password')
