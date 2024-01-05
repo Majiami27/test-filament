@@ -40,7 +40,20 @@ class DevicesDashboard extends BaseWidget
                 Tables\Columns\TextColumn::make('area_id')->label('場域 ID'),
                 Tables\Columns\TextColumn::make('ip')->label('IP位址'),
                 Tables\Columns\TextColumn::make('ssid')->label('SSID'),
-                Tables\Columns\IconColumn::make('status')->label('啟用狀態')->boolean(),
+                Tables\Columns\IconColumn::make('status')
+                    ->label('啟用狀態')
+                    ->icon(fn (string $state): string => match ($state) {
+                        '0' => 'heroicon-o-x-circle',
+                        '1' => 'heroicon-o-check-circle',
+                        '2' => 'heroicon-o-plus-circle',
+                        default => 'heroicon-o-question-mark-circle',
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        '0' => 'danger',
+                        '1' => 'success',
+                        '2' => 'warning',
+                        default => 'gray',
+                    }),
             ]);
     }
 }

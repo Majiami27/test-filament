@@ -52,9 +52,14 @@ class AreaResource extends Resource
                             ->required()
                             ->label('場域名稱')
                             ->maxLength(20),
-                        Forms\Components\Toggle::make('status')
+                        Forms\Components\Select::make('status')
                             ->label('場域狀態')
-                            ->required(),
+                            ->required()
+                            ->options([
+                                0 => '停用',
+                                1 => '啟用',
+                            ])
+                            ->native(false),
                     ])
                     ->columns(2),
             ]);

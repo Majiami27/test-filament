@@ -66,9 +66,13 @@ class DeviceResource extends Resource
                     ->label('SSID')
                     ->required()
                     ->maxLength(32),
-                Forms\Components\Toggle::make('status')
-                    ->label('啟用狀態')
-                    ->required(),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        0 => '停用',
+                        1 => '啟用',
+                        2 => '等待配對',
+                    ])
+                    ->native(false),
             ]);
     }
 
@@ -97,7 +101,18 @@ class DeviceResource extends Resource
                     ->searchable(),
                 Tables\Columns\IconColumn::make('status')
                     ->label('啟用狀態')
-                    ->boolean(),
+                    ->icon(fn (string $state): string => match ($state) {
+                        '0' => 'heroicon-o-x-circle',
+                        '1' => 'heroicon-o-check-circle',
+                        '2' => 'heroicon-o-plus-circle',
+                        default => 'heroicon-o-question-mark-circle',
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        '0' => 'danger',
+                        '1' => 'success',
+                        '2' => 'warning',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('建立日期')
                     ->dateTime()
