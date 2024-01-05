@@ -18,7 +18,15 @@ class AreasDashboard extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->query(Area::query())
+            ->query(function () {
+                /**
+                 * @var \App\Models\User $user
+                 */
+                $user = auth()->user();
+                $organizationId = $user?->organization_id === null ? $user?->id : $user?->organization_id;
+
+                return Area::query()->where('organization_id', $organizationId);
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('場域名稱'),
                 Tables\Columns\TextColumn::make('devices_count')->label('設備數量'),
