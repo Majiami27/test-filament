@@ -12,6 +12,7 @@ class Area extends Model
     protected $fillable = [
         'name',
         'status',
+        'organization_id',
     ];
 
     public function users()
@@ -22,5 +23,24 @@ class Area extends Model
     public function devices()
     {
         return $this->hasMany(Device::class, 'area_id', 'id');
+    }
+
+    public static function booted()
+    {
+        parent::booted();
+
+        static::created(function ($model) {
+            /**
+             * @var \App\Models\User $user
+             */
+            $user = auth()->user();
+            if ($user) {
+                $organizationId = $user->organization_id === null
+                    ? $user->id
+                    : $user->organization_id;
+                $model->organization_id = $organizationId;
+                $model->save();
+            }
+        });
     }
 }

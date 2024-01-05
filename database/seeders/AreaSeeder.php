@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Area;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class AreaSeeder extends Seeder
@@ -12,6 +13,9 @@ class AreaSeeder extends Seeder
      */
     public function run(): void
     {
-        Area::factory()->count(10)->create();
+        $admin = User::where('email', 'admin@example.com')->first();
+        Area::factory()->count(10)->state([
+            'organization_id' => $admin->id,
+        ])->create();
     }
 }

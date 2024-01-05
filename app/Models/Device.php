@@ -19,6 +19,7 @@ class Device extends Model
         'ip',
         'ssid',
         'status',
+        'organization_id',
     ];
 
     protected $hidden = [
@@ -36,5 +37,22 @@ class Device extends Model
     public function details()
     {
         return $this->hasMany(DeviceDetail::class, 'mac_address', 'mac_address');
+    }
+
+    public static function booted()
+    {
+        parent::booted();
+
+        static::created(function ($model) {
+            /**
+             * @var \App\Models\User $user
+             */
+            $user = auth()->user();
+            if ($user) {
+                $organizationId = $user->organization_id === null ? $user->id : $user->organization_id;
+                $model->organization_id = $organizationId;
+                $model->save();
+            }
+        });
     }
 }

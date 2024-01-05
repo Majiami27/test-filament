@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('ip', 30);
             $table->string('ssid', 32);
             $table->unsignedTinyInteger('status');
+            $table->unsignedBigInteger('organization_id')->nullable()->index();
             $table->timestamps();
         });
     }

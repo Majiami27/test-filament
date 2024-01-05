@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 20);
             $table->unsignedTinyInteger('status')->default(0);
+            $table->unsignedBigInteger('organization_id')->nullable()->index();
             $table->timestamps();
         });
     }
