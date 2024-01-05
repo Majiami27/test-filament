@@ -18,11 +18,12 @@ class DetailsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('mac_address')
                     ->required()
-                    // ->default()
+                    ->disabled()
                     ->label('MAC位址')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('port')
                     ->required()
+                    ->disabled()
                     ->numeric()
                     ->label('Port腳位')
                     ->minValue(1)
@@ -30,14 +31,15 @@ class DetailsRelationManager extends RelationManager
                     ->maxLength(30),
                 Forms\Components\TextInput::make('port_name')
                     ->required()
+                    ->disabled()
                     ->label('Port名稱')
                     ->maxLength(30),
                 Forms\Components\TextInput::make('status')
                     ->required()
                     ->numeric()
                     ->label('啟用狀態')
-                    ->minValue(1)
-                    ->maxValue(3),
+                    ->minValue(0)
+                    ->maxValue(2),
             ]);
     }
 
@@ -59,17 +61,17 @@ class DetailsRelationManager extends RelationManager
                     ->beforeFormFilled(function () {
 
                     }),
-                Tables\Actions\AssociateAction::make(),
+                // Tables\Actions\AssociateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DissociateAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DissociateAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DissociateBulkAction::make(),
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DissociateBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
