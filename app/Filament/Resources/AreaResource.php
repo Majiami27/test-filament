@@ -46,7 +46,7 @@ class AreaResource extends Resource
             ->schema([
                 Forms\Components\Section::make('基本資料')
                     ->description('請輸入場域名稱與狀態。')
-                    ->disabled(! auth()->user()->hasRole('admin'))
+                    ->disabled(! auth()->user()->hasAnyRole(['super_admin', 'admin']))
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
