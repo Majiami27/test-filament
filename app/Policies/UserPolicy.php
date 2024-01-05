@@ -55,7 +55,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['super_admin']);
     }
 
     /**
@@ -63,7 +63,7 @@ class UserPolicy
      */
     public function restore(User $user, User $model): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['super_admin']);
     }
 
     /**
@@ -71,6 +71,6 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model): bool
     {
-        return $user->hasRole(['admin']);
+        return $user->hasRole(['super_admin']);
     }
 }
