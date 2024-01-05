@@ -17,11 +17,16 @@ class DeviceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = '裝置管理';
+    protected static ?string $navigationLabel = '設備管理';
 
-    protected static ?string $modelLabel = '裝置';
+    // protected static ?string $modelLabel = '設備';
 
-    protected static ?string $pluralModelLabel = '裝置管理';
+    // protected static ?string $pluralModelLabel = '設備管理';
+
+    public static function getModelLabel(): string
+    {
+        return '設備';
+    }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
@@ -45,25 +50,31 @@ class DeviceResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('mac_address')
                     ->label('MAC位址')
+                    ->disabled()
                     ->required()
                     ->maxLength(30),
                 Forms\Components\TextInput::make('name')
                     ->label('設備名稱')
+                    ->disabled()
                     ->required()
                     ->maxLength(30),
                 Forms\Components\TextInput::make('custom_id')
                     ->label('設備編號')
+                    ->disabled()
                     ->required()
                     ->maxLength(30),
                 Forms\Components\TextInput::make('area_id')
                     ->label('場域ID')
+                    ->disabled()
                     ->numeric(),
                 Forms\Components\TextInput::make('ip')
                     ->label('IP位址')
+                    ->disabled()
                     ->required()
                     ->maxLength(30),
                 Forms\Components\TextInput::make('ssid')
                     ->label('SSID')
+                    ->disabled()
                     ->required()
                     ->maxLength(32),
                 Forms\Components\Toggle::make('status')

@@ -25,12 +25,12 @@ class DetailsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('mac_address')
                     ->required()
-                    ->disabled()
+                    ->disabled(! auth()->user()->hasAnyRole(['super_admin', 'admin']))
                     ->label('MAC位址')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('port')
                     ->required()
-                    ->disabled()
+                    ->disabled(! auth()->user()->hasAnyRole(['super_admin', 'admin']))
                     ->numeric()
                     ->label('Port腳位')
                     ->minValue(1)
@@ -38,7 +38,7 @@ class DetailsRelationManager extends RelationManager
                     ->maxLength(30),
                 Forms\Components\TextInput::make('port_name')
                     ->required()
-                    ->disabled()
+                    ->disabled(! auth()->user()->hasAnyRole(['super_admin', 'admin']))
                     ->label('Port名稱')
                     ->maxLength(30),
                 Forms\Components\TextInput::make('status')
