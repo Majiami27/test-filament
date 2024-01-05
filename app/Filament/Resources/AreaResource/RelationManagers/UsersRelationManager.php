@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class UsersRelationManager extends RelationManager
 {
@@ -54,7 +55,21 @@ class UsersRelationManager extends RelationManager
             ])
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
-                Tables\Actions\AttachAction::make()->preloadRecordSelect(),
+                Tables\Actions\AttachAction::make()
+                    ->recordSelectOptionsQuery(function (Builder $query) {
+                        /**
+                         * @var \App\Models\User $user
+                         */
+                        $user = auth()->user();
+
+                        if ($user->hasRole('super_admin')) {
+                            // TODO: 應該是選擇該組織的設備
+                            return $query;
+                        }
+
+                        return $query->where('organization_id', '=', $user->id);
+                    })
+                    ->preloadRecordSelect(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
