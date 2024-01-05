@@ -75,12 +75,12 @@ class DevicesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\AssociateAction::make()->hidden(! auth()->user()->hasRole('admin'))->preloadRecordSelect(),
+                Tables\Actions\AssociateAction::make()->hidden(! auth()->user()->hasAnyRole(['super_admin', 'admin']))->preloadRecordSelect(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DissociateAction::make()
-                    ->hidden(! auth()->user()->hasRole('admin')),
+                    ->hidden(! auth()->user()->hasAnyRole(['super_admin', 'admin'])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

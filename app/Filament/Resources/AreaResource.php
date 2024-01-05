@@ -24,13 +24,29 @@ class AreaResource extends Resource
 
     protected static ?string $pluralModelLabel = '組織管理';
 
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = auth()->user();
+
+        if ($user->hasRole('super_admin')) {
+            return parent::getEloquentQuery();
+        }
+
+        $organizationId = $user?->organization_id === null ? $user?->id : $user?->organization_id;
+
+        return parent::getEloquentQuery()->where('organization_id', $organizationId);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Section::make('基本資料')
                     ->description('請輸入場域名稱與狀態。')
-                    ->disabled(! auth()->user()->hasRole('admin'))
+                    ->disabled(! auth()->user()->hasAnyRole(['super_admin', 'admin']))
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()

@@ -18,7 +18,20 @@ class DevicesDashboard extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->query(Device::query())
+            ->query(function () {
+                /**
+                 * @var \App\Models\User $user
+                 */
+                $user = auth()->user();
+
+                if ($user->hasRole('super_admin')) {
+                    return Device::query();
+                }
+
+                $organizationId = $user?->organization_id === null ? $user?->id : $user?->organization_id;
+
+                return Device::query()->where('organization_id', $organizationId)->with('area');
+            })
             ->defaultSort('area_id', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('mac_address')->label('MAC位址'),

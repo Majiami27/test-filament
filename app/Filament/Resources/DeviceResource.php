@@ -23,6 +23,22 @@ class DeviceResource extends Resource
 
     protected static ?string $pluralModelLabel = '裝置管理';
 
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = auth()->user();
+
+        if ($user->hasRole('super_admin')) {
+            return parent::getEloquentQuery();
+        }
+
+        $organizationId = $user?->organization_id === null ? $user?->id : $user?->organization_id;
+
+        return parent::getEloquentQuery()->where('organization_id', $organizationId);
+    }
+
     public static function form(Form $form): Form
     {
         return $form

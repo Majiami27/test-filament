@@ -22,7 +22,7 @@ class EditArea extends EditRecord
      */
     protected function getFormActions(): array
     {
-        if (! auth()->user()->hasRole('admin')) {
+        if (! auth()->user()->hasAnyRole(['super_admin', 'admin'])) {
             return [];
         }
 
