@@ -58,9 +58,14 @@ class UserResource extends Resource
                     Forms\Components\DateTimePicker::make('email_verified_at')
                         ->label('E-Mail 驗證於')
                         ->nullable(),
-                    Forms\Components\Toggle::make('status')
+                    Forms\Components\Select::make('status')
                         ->label('狀態')
-                        ->required(),
+                        ->required()
+                        ->options([
+                            0 => '停用',
+                            1 => '啟用',
+                        ])
+                        ->native(false),
                 ])->columns(2),
                 Forms\Components\Section::make([
                     Forms\Components\Select::make('roles')
