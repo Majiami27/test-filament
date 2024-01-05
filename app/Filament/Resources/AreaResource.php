@@ -56,15 +56,19 @@ class AreaResource extends Resource
                     ->counts('devices'),
                 Tables\Columns\TextColumn::make('users_count')
                     ->label('使用者數量')
-                    ->counts('users'),
+                    ->counts('users')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('status')
+                    ->label('狀態')
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('建立時間')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('最後更新時間')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

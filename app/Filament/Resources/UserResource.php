@@ -35,12 +35,12 @@ class UserResource extends Resource
                         ->required()
                         ->maxLength(20),
                     Forms\Components\TextInput::make('email')
-                        ->label('電子郵件')
+                        ->label('E-Mail')
                         ->email()
                         ->required()
                         ->maxLength(255),
                     Forms\Components\DateTimePicker::make('email_verified_at')
-                        ->label('電子郵件驗證於')
+                        ->label('E-Mail 驗證於')
                         ->nullable(),
                     Forms\Components\Toggle::make('status')
                         ->label('狀態')
@@ -66,19 +66,25 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('名稱')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label('E-Mail')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
+                    ->label('E-Mail 驗證於')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('status')
+                    ->label('狀態')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('建立時間')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('最後更新時間')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -27,17 +27,15 @@ class RoleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make([
-                    Forms\Components\TextInput::make('name')
-                        ->label('名稱')
-                        ->required()
-                        ->maxLength(20),
-                    // Forms\Components\Select::make('permissions')
-                    //     ->disabled()
-                    //     ->multiple()
-                    //     ->label('權限')
-                    //     ->relationship('permissions', 'name')->preload(),
-                ]),
+                Forms\Components\TextInput::make('name')
+                    ->label('角色名稱')
+                    ->required()
+                    ->maxLength(20),
+                // Forms\Components\Select::make('permissions')
+                //     ->disabled()
+                //     ->multiple()
+                //     ->label('權限')
+                //     ->relationship('permissions', 'name')->preload(),
             ]);
     }
 
@@ -46,6 +44,7 @@ class RoleResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('角色名稱')
                     ->searchable(),
             ])
             ->filters([
