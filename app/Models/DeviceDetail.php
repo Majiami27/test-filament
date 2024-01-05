@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Device extends Model
+class DeviceDetail extends Model
 {
     use HasFactory;
 
@@ -13,11 +13,8 @@ class Device extends Model
 
     protected $fillable = [
         'mac_address',
-        'name',
-        'custom_id',
-        'area_id',
-        'ip',
-        'ssid',
+        'port',
+        'port_name',
         'status',
     ];
 
@@ -28,13 +25,8 @@ class Device extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function area()
+    public function devices()
     {
-        return $this->belongsTo(Area::class, 'area_id', 'id');
-    }
-
-    public function details()
-    {
-        return $this->hasMany(DeviceDetail::class, 'mac_address', 'mac_address');
+        return $this->belongsTo(Device::class, 'mac_address', 'mac_address');
     }
 }
