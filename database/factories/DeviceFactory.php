@@ -17,13 +17,32 @@ class DeviceFactory extends Factory
     public function definition(): array
     {
         return [
-            'mac_address' => fake()->word(10),
+            'mac_address' => fake()->macAddress(),
             'name' => fake()->word(10),
             'custom_id' => fake()->word(10),
             // 'area_id' => fake()->word(10),
-            'ip' => fake()->word(10),
+            'ip' => fake()->localIpv4(),
             'ssid' => fake()->word(10),
             'status' => fake()->boolean(),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (\App\Models\Device $device) {
+            $device->details()->saveMany(
+                \App\Models\DeviceDetail::factory(8)
+                    ->state([
+                        'mac_address' => $device->mac_address,
+                    ])
+                    ->sequence(
+                        fn ($sequence) => [
+                            'port' => $sequence->index + 1,
+                            'port_name' => 'Port '.($sequence->index + 1),
+                        ]
+                    )
+                    ->make()
+            );
+        });
     }
 }
