@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('bind_code')->nullable();
             $table->string('password');
             $table->boolean('status')->default(true);
             $table->unsignedBigInteger('organization_id')->nullable()->index();
