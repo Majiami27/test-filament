@@ -22,6 +22,7 @@ class DeviceDetail extends Model
     ];
 
     protected $casts = [
+        'status' => 'boolean',
         'updated_at' => 'datetime',
     ];
 
