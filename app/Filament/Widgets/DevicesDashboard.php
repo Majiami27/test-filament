@@ -37,7 +37,7 @@ class DevicesDashboard extends BaseWidget
                 Tables\Columns\TextColumn::make('mac_address')->label('MAC位址'),
                 Tables\Columns\TextColumn::make('name')->label('設備名稱'),
                 Tables\Columns\TextColumn::make('custom_id')->label('設備編號'),
-                Tables\Columns\TextColumn::make('area_id')->label('場域 ID'),
+                Tables\Columns\TextColumn::make('area.name')->label('場域名稱'),
                 Tables\Columns\TextColumn::make('ip')->label('IP位址'),
                 Tables\Columns\TextColumn::make('ssid')->label('SSID'),
                 Tables\Columns\IconColumn::make('status')

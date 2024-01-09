@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('mac_address');
             $table->unsignedTinyInteger('port');
-            $table->string('port_name', 30);
+            $table->string('port_name', 30)->nullable();
             $table->unsignedTinyInteger('status');
             $table->timestamps();
 
