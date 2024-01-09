@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
-            $table->string('mac_address', 30)->index();
-            $table->string('name', 30);
-            $table->string('custom_id', 30);
+            $table->string('mac_address', 30)->index()->unique();
+            $table->string('name', 36)->nullable();
+            $table->string('custom_id', 36)->nullable();
             $table->foreignId('area_id', 30)->nullable();
             $table->string('ip', 30);
             $table->string('ssid', 32);
