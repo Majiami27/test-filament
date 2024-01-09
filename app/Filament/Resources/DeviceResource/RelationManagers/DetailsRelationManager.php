@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class DetailsRelationManager extends RelationManager
 {
@@ -41,12 +42,9 @@ class DetailsRelationManager extends RelationManager
                     ->disabled(! auth()->user()->hasAnyRole(['super_admin', 'admin']))
                     ->label('Port名稱')
                     ->maxLength(30),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\Toggle::make('status')
                     ->required()
-                    ->numeric()
-                    ->label('啟用狀態')
-                    ->minValue(0)
-                    ->maxValue(2),
+                    ->label('啟用狀態'),
             ]);
     }
 
@@ -71,7 +69,17 @@ class DetailsRelationManager extends RelationManager
                 // Tables\Actions\AssociateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->before(function (Model $record, array $data) {
+                        \Log::debug('after EditAction');
+                        \Log::debug($record);
+                        \Log::debug($data);
+
+                        if ($record->status !== $data['status']) {
+                            \Log::info('status changed');
+                            // TODO: call api POST /device/control
+                        }
+                    }),
                 // Tables\Actions\DissociateAction::make(),
                 // Tables\Actions\DeleteAction::make(),
             ])
