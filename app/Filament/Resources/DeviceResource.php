@@ -48,42 +48,46 @@ class DeviceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('mac_address')
-                    ->label('MAC位址')
-                    ->disabled()
-                    ->required()
-                    ->maxLength(30),
-                Forms\Components\TextInput::make('name')
-                    ->label('設備名稱')
-                    ->disabled()
-                    ->required()
-                    ->maxLength(30),
-                Forms\Components\TextInput::make('custom_id')
-                    ->label('設備編號')
-                    ->disabled()
-                    ->required()
-                    ->maxLength(30),
-                Forms\Components\TextInput::make('area_id')
-                    ->label('場域ID')
-                    ->disabled()
-                    ->numeric(),
-                Forms\Components\TextInput::make('ip')
-                    ->label('IP位址')
-                    ->disabled()
-                    ->required()
-                    ->maxLength(30),
-                Forms\Components\TextInput::make('ssid')
-                    ->label('SSID')
-                    ->disabled()
-                    ->required()
-                    ->maxLength(32),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        0 => '停用',
-                        1 => '啟用',
-                        2 => '等待配對',
-                    ])
-                    ->native(false),
+                Forms\Components\Section::make('基本資料')->schema([
+                    Forms\Components\TextInput::make('mac_address')
+                        ->label('MAC位址')
+                        ->disabled()
+                        ->required()
+                        ->maxLength(30),
+                    Forms\Components\TextInput::make('name')
+                        ->label('設備名稱')
+                        ->disabled()
+                        ->required()
+                        ->maxLength(30),
+                    Forms\Components\TextInput::make('custom_id')
+                        ->label('設備編號')
+                        ->disabled()
+                        ->required()
+                        ->maxLength(30),
+                    Forms\Components\TextInput::make('area_id')
+                        ->label('場域ID')
+                        ->disabled()
+                        ->numeric(),
+                    Forms\Components\TextInput::make('ip')
+                        ->label('IP位址')
+                        ->disabled()
+                        ->required()
+                        ->maxLength(30),
+                    Forms\Components\TextInput::make('ssid')
+                        ->label('SSID')
+                        ->disabled()
+                        ->required()
+                        ->maxLength(32),
+                    Forms\Components\Select::make('status')
+                        ->label('狀態')
+                        ->disabled()
+                        ->options([
+                            0 => '停用',
+                            1 => '啟用',
+                            2 => '等待配對',
+                        ])
+                        ->native(false),
+                ])->columns(2),
             ]);
     }
 
@@ -100,9 +104,8 @@ class DeviceResource extends Resource
                 Tables\Columns\TextColumn::make('custom_id')
                     ->label('設備編號')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('area_id')
-                    ->label('場域 ID')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('area.name')
+                    ->label('場域名稱')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ip')
                     ->label('IP位址')

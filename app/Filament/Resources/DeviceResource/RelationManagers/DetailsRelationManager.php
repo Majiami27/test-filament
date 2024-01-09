@@ -62,10 +62,10 @@ class DetailsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->beforeFormFilled(function () {
+                // Tables\Actions\CreateAction::make()
+                //     ->beforeFormFilled(function () {
 
-                    }),
+                //     }),
                 // Tables\Actions\AssociateAction::make(),
             ])
             ->actions([
