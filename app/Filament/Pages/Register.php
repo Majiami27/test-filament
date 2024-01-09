@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Service\IotService;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Component;
@@ -52,6 +53,12 @@ class Register extends AuthRegister
         Filament::auth()->login($user);
 
         session()->regenerate();
+
+        /**
+         * @var \App\Service\IotService $iotService
+         */
+        $iotService = app()->make(IoTService::class);
+        $iotService->postDevice(auth()->user());
 
         return app(RegistrationResponse::class);
     }
