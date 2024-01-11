@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DeviceResource\Pages;
 use App\Filament\Resources\DeviceResource\RelationManagers\DetailsRelationManager;
 use App\Models\Device;
+use App\Service\IotService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -93,6 +94,12 @@ class DeviceResource extends Resource
 
     public static function table(Table $table): Table
     {
+        /**
+         * @var \App\Service\IotService $iotService
+         */
+        $iotService = app()->make(IotService::class);
+        $iotService->postDevice(auth()->user());
+
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('mac_address')

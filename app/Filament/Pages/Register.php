@@ -57,7 +57,7 @@ class Register extends AuthRegister
         /**
          * @var \App\Service\IotService $iotService
          */
-        $iotService = app()->make(IoTService::class);
+        $iotService = app()->make(IotService::class);
         $iotService->postDevice(auth()->user());
 
         return app(RegistrationResponse::class);

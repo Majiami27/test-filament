@@ -29,7 +29,7 @@ class IotService
             $rsData = $response->json();
 
             // 有需要驗證設備, 打驗證api
-            if ($rsData['adoptable']) {
+            if (isset($rsData['adoptable'])) {
                 foreach ($rsData['adoptable'] as $key => $row) {
                     $this->postDeviceAdopt($user, $row['mac_addr']);
                 }
@@ -38,14 +38,14 @@ class IotService
             }
 
             // bind_code為null時寫入
-            if (! isset($user->bind_code)) {
+            if (! isset($user->bind_code) && isset($rsData['bindCode'])) {
                 $user->update(['bind_code' => $rsData['bindCode']]);
             }
 
             // 判斷設備是否存在
             $organizationDevices = Device::where('organization_id', $user->id)->get();
 
-            foreach ($rsData['devices'] as $row) {
+            foreach (data_get($rsData, 'devices', []) as $row) {
                 if ($organizationDevices && $organizationDevices->where('mac_address', $row['mac_addr'])->first()) {
                     Device::updateOrCreate(['mac_address' => $row['mac_addr']],
                         [
@@ -63,9 +63,11 @@ class IotService
                     ]);
                 }
             }
-        } else {
-            return false;
+
+            return true;
         }
+
+        return false;
 
         // TODO:\Log::debug('after EditAction');
 
