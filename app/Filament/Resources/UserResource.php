@@ -56,9 +56,9 @@ class UserResource extends Resource
                         ->email()
                         ->required()
                         ->maxLength(255),
-                    Forms\Components\DateTimePicker::make('email_verified_at')
-                        ->label('E-Mail 驗證於')
-                        ->nullable(),
+                    // Forms\Components\DateTimePicker::make('email_verified_at')
+                    //     ->label('E-Mail 驗證於')
+                    //     ->nullable(),
                     Forms\Components\Select::make('status')
                         ->label('狀態')
                         ->required()
@@ -109,10 +109,10 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->label('E-Mail')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->label('E-Mail 驗證於')
-                    ->dateTime()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('email_verified_at')
+                //     ->label('E-Mail 驗證於')
+                //     ->dateTime()
+                //     ->sortable(),
                 Tables\Columns\IconColumn::make('status')
                     ->label('狀態')
                     ->boolean(),
