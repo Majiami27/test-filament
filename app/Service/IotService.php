@@ -10,6 +10,13 @@ class IotService
 {
     protected $user;
 
+    protected string $apiUrl;
+
+    public function __construct()
+    {
+        $this->apiUrl = config('app.iot_api_url', 'http://localhost');
+    }
+
     /**
      * 發送給 /device
      *
@@ -23,7 +30,10 @@ class IotService
 
         $request = ['email' => $user->email];
 
-        $response = Http::post('https://iot.yomin.ddns.ms/device', $request);
+        $response = Http::post("$this->apiUrl/device", $request);
+
+        \Log::debug('=== call in postDevice ===');
+        \Log::debug($response->json());
 
         if ($response->ok()) {
             $rsData = $response->json();
@@ -34,7 +44,10 @@ class IotService
                     $this->postDeviceAdopt($user, $row['mac_addr']);
                 }
                 // 自動驗證設備
-                $rsData = Http::post('https://iot.yomin.ddns.ms/device', $request)->json();
+                $rsData = Http::post("$this->apiUrl/device", $request)->json();
+
+                \Log::debug('=== after adopt ===');
+                \Log::debug($rsData);
             }
 
             // bind_code為null時寫入
@@ -79,7 +92,7 @@ class IotService
             'email' => $user->email,
             'macAddr' => $macAddr,
         ];
-        $response = Http::post('https://iot.yomin.ddns.ms/device/adopt', $request);
+        $response = Http::post("$this->apiUrl/device/adopt", $request);
 
         if ($response->ok()) {
             return true;
