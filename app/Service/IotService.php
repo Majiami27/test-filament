@@ -40,9 +40,9 @@ class IotService
             $rsData = $response->json();
 
             // 有需要驗證設備, 打驗證api
-            if (isset($rsData['adoptable'])) {
+            if (isset($rsData['adoptable']) && count($rsData['adoptable']) > 0) {
                 foreach ($rsData['adoptable'] as $key => $row) {
-                    $this->postDeviceAdopt($user, $row['mac_addr']);
+                    $this->postDeviceAdopt($user, $row['macAddr']);
                 }
                 // 自動驗證設備
                 $rsData = Http::post("$this->apiUrl/device", $request)->json();
@@ -53,6 +53,8 @@ class IotService
 
             // bind_code為null時寫入
             if (! isset($user->bind_code) && isset($rsData['bindCode'])) {
+                \Log::debug('=== update bind_code ===');
+                \Log::debug($rsData['bindCode']);
                 $user->update(['bind_code' => $rsData['bindCode']]);
             }
 
@@ -60,20 +62,21 @@ class IotService
             $organizationDevices = Device::where('organization_id', $user->id)->get();
 
             foreach (data_get($rsData, 'devices', []) as $row) {
-                if ($organizationDevices && $organizationDevices->where('mac_address', $row['mac_addr'])->first()) {
-                    Device::updateOrCreate(['mac_address' => $row['mac_addr']],
+                \Log::debug('=== get devices ===');
+                if ($organizationDevices && $organizationDevices->where('mac_address', $row['macAddr'])->first()) {
+                    Device::updateOrCreate(['mac_address' => $row['macAddr']],
                         [
-                            'ip' => '001_ip',
-                            'ssid' => '001_SSID',
-                            'status' => $row['dev_online'],
+                            'ip' => $row['devIp'] ?? '',
+                            'ssid' => $row['devSsid'] ?? '',
+                            'status' => $row['devOnline'],
                         ]);
                 } else {
                     Device::create([
                         'organization_id' => $user->id,
-                        'mac_address' => $row['mac_addr'],
-                        'ip' => 'TEST_ip',
-                        'ssid' => 'TEST_SSID',
-                        'status' => $row['dev_online'],
+                        'mac_address' => $row['macAddr'],
+                        'ip' => $row['devIp'] ?? '',
+                        'ssid' => $row['devSsid'] ?? '',
+                        'status' => $row['devOnline'],
                     ]);
                 }
             }
