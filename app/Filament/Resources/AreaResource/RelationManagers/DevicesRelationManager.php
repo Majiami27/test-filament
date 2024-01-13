@@ -8,7 +8,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
 class DevicesRelationManager extends RelationManager
 {
@@ -94,7 +93,64 @@ class DevicesRelationManager extends RelationManager
                     ->preloadRecordSelect(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->form([
+                        Forms\Components\Section::make([
+                            Forms\Components\TextInput::make('mac_address')
+                                ->label('MAC位址')
+                                ->disabled()
+                                ->required()
+                                ->maxLength(30),
+                            Forms\Components\TextInput::make('name')
+                                ->label('設備名稱')
+                                ->disabled()
+                                ->required()
+                                ->maxLength(30),
+                            Forms\Components\TextInput::make('custom_id')
+                                ->label('設備編號')
+                                ->disabled()
+                                ->required()
+                                ->maxLength(30),
+                            Forms\Components\TextInput::make('ip')
+                                ->label('IP位址')
+                                ->disabled()
+                                ->required()
+                                ->maxLength(30),
+                            Forms\Components\TextInput::make('ssid')
+                                ->label('SSID')
+                                ->disabled()
+                                ->required()
+                                ->maxLength(32),
+                            Forms\Components\Toggle::make('status')
+                                ->label('啟用狀態')
+                                ->disabled()
+                                ->required(),
+                        ])->columns(2),
+                        Forms\Components\Section::make([
+                            Forms\Components\Repeater::make('details')
+                                ->relationship()
+                                ->addable(false)
+                                ->deletable(false)
+                                ->schema([
+                                    Forms\Components\TextInput::make('port')
+                                        ->disabled()
+                                        ->label('Port')
+                                        ->required()
+                                        ->maxLength(30),
+                                    Forms\Components\TextInput::make('port_name')
+                                        ->label('名稱')
+                                        ->required()
+                                        ->maxLength(30),
+                                    Forms\Components\Toggle::make('status')
+                                        ->label('啟用狀態')
+                                        ->required(),
+                                ])
+                                ->columns(2)
+                                ->grid(2)
+                                ->label('詳細資料')
+                                ->collapsible(),
+                        ]),
+                    ]),
                 Tables\Actions\DissociateAction::make()
                     ->hidden(! auth()->user()->hasAnyRole(['super_admin', 'admin'])),
             ])
@@ -103,10 +159,5 @@ class DevicesRelationManager extends RelationManager
                     Tables\Actions\DissociateBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
-    {
-        return true;
     }
 }
