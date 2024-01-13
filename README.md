@@ -27,6 +27,11 @@ npm run build
 cp .env.example .env
 ```
 
+設置 .env IOT_API_URL
+```bash
+IOT_API_URL='iot api url'
+```
+
 
 設置 .env 資料庫 ，預設建立 database 名稱為 laravel ，帳號為 root 。依照需求修改
 
