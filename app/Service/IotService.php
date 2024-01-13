@@ -19,6 +19,7 @@ class IotService
 
     /**
      * 發送給 /device
+     * 取得設備列表
      *
      * @param ?? $user   傳入資料auth()->user()
      */
@@ -86,6 +87,9 @@ class IotService
 
     }
 
+    /**
+     * 配對設備
+     */
     public function postDeviceAdopt(User $user, string $macAddr)
     {
         $request = [
@@ -93,6 +97,25 @@ class IotService
             'macAddr' => $macAddr,
         ];
         $response = Http::post("$this->apiUrl/device/adopt", $request);
+
+        if ($response->ok()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 控制設備
+     */
+    public function postDeviceControl(User $user, string $macAddr, array $action)
+    {
+        $request = [
+            'email' => $user->email,
+            'macAddr' => $macAddr,
+            'status' => $action,
+        ];
+        $response = Http::post("$this->apiUrl/device/control", $request);
 
         if ($response->ok()) {
             return true;
