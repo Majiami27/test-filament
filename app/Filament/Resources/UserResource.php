@@ -54,6 +54,7 @@ class UserResource extends Resource
                     Forms\Components\TextInput::make('email')
                         ->label('E-Mail')
                         ->email()
+                        ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
                     // Forms\Components\DateTimePicker::make('email_verified_at')
