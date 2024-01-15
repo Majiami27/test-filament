@@ -64,20 +64,53 @@ class IotService
             foreach (data_get($rsData, 'devices', []) as $row) {
                 \Log::debug('=== get devices ===');
                 if ($organizationDevices && $organizationDevices->where('mac_address', $row['macAddr'])->first()) {
-                    Device::updateOrCreate(['mac_address' => $row['macAddr']],
+                    $device = Device::updateOrCreate(['mac_address' => $row['macAddr']],
                         [
                             'ip' => $row['devIp'] ?? '',
                             'ssid' => $row['devSsid'] ?? '',
                             'status' => $row['devOnline'],
                         ]);
+                    \Log::debug('=== update device ===');
+                    \Log::debug($device);
+
                 } else {
-                    Device::create([
+                    $device = Device::create([
                         'organization_id' => $user->id,
                         'mac_address' => $row['macAddr'],
                         'ip' => $row['devIp'] ?? '',
                         'ssid' => $row['devSsid'] ?? '',
                         'status' => $row['devOnline'],
                     ]);
+                    \Log::debug('=== create device ===');
+                    \Log::debug($device);
+                    \Log::debug('=== row ===');
+                    \Log::debug($row);
+
+                    if (isset($row['devType'])) {
+                        $portNumber = match ($row['devType']) {
+                            'relay8' => 8,
+                            default => 0,
+                        };
+
+                        \Log::debug('=== portNumber ===');
+                        \Log::debug($portNumber);
+
+                        if ($portNumber > 0) {
+                            $ports = [];
+                            for ($i = 1; $i <= $portNumber; $i++) {
+                                $ports[] = [
+                                    'device_id' => $device->id,
+                                    'port' => $i,
+                                    'port_name' => "Port $i",
+                                    'status' => false,
+                                ];
+                            }
+
+                            \Log::debug('=== ports ===');
+                            \Log::debug($ports);
+                            $device->details()->createMany($ports);
+                        }
+                    }
                 }
             }
 
