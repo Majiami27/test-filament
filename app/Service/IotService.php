@@ -73,6 +73,18 @@ class IotService
                     \Log::debug('=== update device ===');
                     \Log::debug($device);
 
+                    // if exist, update
+                    if (isset($row['devType']) && isset($row['devStatus'])) {
+                        foreach ($row['devStatus'] as $port => $status) {
+                            $device->details()->updateOrCreate(
+                                ['port' => $port],
+                                [
+                                    'port_name' => "Port $port",
+                                    'status' => $status,
+                                ]);
+                        }
+                    }
+
                 } else {
                     $device = Device::create([
                         'organization_id' => $user->id,
