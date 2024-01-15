@@ -26,7 +26,7 @@ class IotService
     public function postDevice(User $user)
     {
         if (! $user->hasAnyRole(['admin', 'super_admin'])) {
-            return false;
+            $user = User::find($user->organization_id);
         }
 
         $request = ['email' => $user->email];

@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Device;
+use App\Service\IotService;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -17,6 +18,12 @@ class DevicesDashboard extends BaseWidget
 
     public function table(Table $table): Table
     {
+        /**
+         * @var \App\Service\IotService $iotService
+         */
+        $iotService = app()->make(IotService::class);
+        $iotService->postDevice(auth()->user());
+
         return $table
             ->query(function () {
                 /**
