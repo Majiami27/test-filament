@@ -4,12 +4,14 @@ namespace App\Filament\Pages;
 
 use App\Service\IotService;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\TextInput;
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Register as AuthRegister;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
@@ -101,5 +103,30 @@ class Register extends AuthRegister
             ->password()
             ->required()
             ->dehydrated(false);
+    }
+
+    public function getRegisterFormAction(): Action
+    {
+        return Action::make('register')
+            ->label('註冊')
+            ->submit('register');
+    }
+
+    public function getTitle(): string|Htmlable
+    {
+        return '註冊';
+    }
+
+    public function getHeading(): string|Htmlable
+    {
+        return '註冊';
+    }
+
+    public function loginAction(): Action
+    {
+        return Action::make('login')
+            ->link()
+            ->label('登入您的帳號')
+            ->url(filament()->getLoginUrl());
     }
 }
