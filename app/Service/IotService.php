@@ -158,6 +158,9 @@ class IotService
      */
     public function postDeviceControl(User $user, string $macAddr, array $action)
     {
+        if (! $user->hasAnyRole(['admin', 'super_admin'])) {
+            $user = User::find($user->organization_id);
+        }
         $request = [
             'email' => $user->email,
             'macAddr' => $macAddr,
