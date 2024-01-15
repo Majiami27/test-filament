@@ -57,12 +57,10 @@ class DeviceResource extends Resource
                         ->maxLength(30),
                     Forms\Components\TextInput::make('name')
                         ->label('設備名稱')
-                        ->disabled()
                         ->required()
                         ->maxLength(30),
                     Forms\Components\TextInput::make('custom_id')
                         ->label('設備編號')
-                        ->disabled()
                         ->required()
                         ->maxLength(30),
                     Forms\Components\TextInput::make('area_id')
@@ -113,7 +111,7 @@ class DeviceResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('area.name')
                     ->label('場域名稱')
-                    ->sortable(),
+                    ->default('待部屬'),
                 Tables\Columns\TextColumn::make('ip')
                     ->label('IP位址')
                     ->searchable(),

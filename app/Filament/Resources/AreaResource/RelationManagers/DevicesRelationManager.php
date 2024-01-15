@@ -109,7 +109,6 @@ class DevicesRelationManager extends RelationManager
                                 ->maxLength(30),
                             Forms\Components\TextInput::make('custom_id')
                                 ->label('設備編號')
-                                ->disabled()
                                 ->nullable()
                                 ->maxLength(30),
                             Forms\Components\TextInput::make('ip')
