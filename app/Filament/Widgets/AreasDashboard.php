@@ -34,8 +34,8 @@ class AreasDashboard extends BaseWidget
             })
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('場域名稱'),
-                Tables\Columns\TextColumn::make('devices_count')->label('設備數量'),
-                Tables\Columns\TextColumn::make('users_count')->label('使用者數量'),
+                Tables\Columns\TextColumn::make('devices_count')->label('設備數量')->counts('devices'),
+                Tables\Columns\TextColumn::make('users_count')->label('使用者數量')->counts('users'),
                 Tables\Columns\IconColumn::make('status')->label('啟用狀態')->boolean(),
             ]);
     }

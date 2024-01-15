@@ -30,7 +30,7 @@ class DevicesDashboard extends BaseWidget
 
                 $organizationId = $user?->organization_id === null ? $user?->id : $user?->organization_id;
 
-                return Device::query()->where('organization_id', $organizationId)->with('area');
+                return Device::query()->where('organization_id', $organizationId)->with('area')->orderBy('area_id', 'asc');
             })
             ->defaultSort('area_id', 'desc')
             ->columns([
