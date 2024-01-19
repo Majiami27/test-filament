@@ -86,13 +86,13 @@ class IotService
                     }
 
                 } else {
-                    $device = Device::create([
-                        'organization_id' => $user->id,
-                        'mac_address' => $row['macAddr'],
-                        'ip' => $row['devIp'] ?? '',
-                        'ssid' => $row['devSsid'] ?? '',
-                        'status' => $row['devOnline'],
-                    ]);
+                    $device = Device::updateOrCreate(['mac_address' => $row['macAddr']],
+                        [
+                            'organization_id' => $user->id,
+                            'ip' => $row['devIp'] ?? '',
+                            'ssid' => $row['devSsid'] ?? '',
+                            'status' => $row['devOnline'],
+                        ]);
                     \Log::debug('=== create device ===');
                     \Log::debug($device);
                     \Log::debug('=== row ===');
