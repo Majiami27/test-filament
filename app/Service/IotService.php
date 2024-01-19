@@ -27,6 +27,8 @@ class IotService
     {
         if (! $user->hasAnyRole(['admin', 'super_admin'])) {
             $user = User::find($user->organization_id);
+        } else {
+            $user = ($user->organization_id === null) ? $user : User::find($user->organization_id);
         }
 
         $request = ['email' => $user->email];
@@ -160,6 +162,8 @@ class IotService
     {
         if (! $user->hasAnyRole(['admin', 'super_admin'])) {
             $user = User::find($user->organization_id);
+        } else {
+            $user = ($user->organization_id === null) ? $user : User::find($user->organization_id);
         }
         $request = [
             'email' => $user->email,
