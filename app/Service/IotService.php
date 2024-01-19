@@ -113,7 +113,7 @@ class IotService
                             $ports = [];
                             for ($i = 1; $i <= $portNumber; $i++) {
                                 $ports[] = [
-                                    'device_id' => $device->id,
+                                    'mac_address' => $row['macAddr'],
                                     'port' => $i,
                                     'port_name' => "Port $i",
                                     'status' => false,
@@ -122,7 +122,9 @@ class IotService
 
                             \Log::debug('=== ports ===');
                             \Log::debug($ports);
-                            $device->details()->createMany($ports);
+                            // change to upsert to avoid duplicate
+                            // $device->details()->createMany($ports);
+                            $device->details()->upsert($ports, ['mac_address', 'port'], ['port_name', 'status']);
                         }
                     }
                 }
