@@ -26,7 +26,7 @@ class DeviceDetail extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function devices()
+    public function device()
     {
         return $this->belongsTo(Device::class, 'mac_address', 'mac_address');
     }

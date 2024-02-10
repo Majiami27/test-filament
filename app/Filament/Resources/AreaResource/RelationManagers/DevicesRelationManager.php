@@ -97,6 +97,38 @@ class DevicesRelationManager extends RelationManager
                 Tables\Actions\EditAction::make()
                     ->form([
                         Forms\Components\Section::make([
+                            Forms\Components\Repeater::make('details')
+                                ->relationship()
+                                ->addable(false)
+                                ->deletable(false)
+                                ->schema([
+                                    Forms\Components\Toggle::make('status')
+                                        ->label('狀態')
+                                        ->live()
+                                        ->afterStateUpdated(function (?string $state, ?string $old, Model $record) {
+                                            $record->status = (bool) $state;
+                                            $record->save();
+
+                                            $ports = $record->device->details;
+
+                                            $action = $ports->pluck('status', 'port')->toArray();
+
+                                            /**
+                                             * @var \App\Service\IotService $iotService
+                                             */
+                                            $iotService = app(\App\Service\IotService::class);
+                                            $iotService->postDeviceControl(auth()->user(), $record->mac_address, $action);
+                                        })
+
+                                        ->required(),
+                                ])
+                                ->itemLabel(fn (array $state): ?string => 'Port '.$state['port'] ?? null)
+                                ->columns(3)
+                                ->grid(2)
+                                ->label('詳細資料')
+                                ->collapsible(),
+                        ]),
+                        Forms\Components\Section::make([
                             Forms\Components\TextInput::make('mac_address')
                                 ->label('MAC位址')
                                 ->disabled()
@@ -121,36 +153,8 @@ class DevicesRelationManager extends RelationManager
                                 ->disabled()
                                 ->nullable()
                                 ->maxLength(32),
-                            Forms\Components\Toggle::make('status')
-                                ->label('啟用狀態')
-                                ->disabled()
-                                ->required(),
                         ])->columns(2),
-                        Forms\Components\Section::make([
-                            Forms\Components\Repeater::make('details')
-                                ->relationship()
-                                ->addable(false)
-                                ->deletable(false)
-                                ->schema([
-                                    Forms\Components\TextInput::make('port')
-                                        ->disabled()
-                                        ->label('Port')
-                                        ->required()
-                                        ->maxLength(30),
-                                    Forms\Components\TextInput::make('port_name')
-                                        ->label('名稱')
-                                        ->required()
-                                        ->maxLength(30),
-                                    Forms\Components\Toggle::make('status')
-                                        ->label('狀態')
-                                        ->required(),
-                                ])
-                                ->itemLabel(fn (array $state): ?string => 'Port '.$state['port'] ?? null)
-                                ->columns(3)
-                                ->grid(2)
-                                ->label('詳細資料')
-                                ->collapsible(),
-                        ]),
+
                     ])->after(function (Model $record, array $data) {
                         // Runs after the form fields are saved to the database.
                         $ports = $record->details;
