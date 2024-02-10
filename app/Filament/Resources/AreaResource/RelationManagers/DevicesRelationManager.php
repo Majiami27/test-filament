@@ -126,7 +126,7 @@ class DevicesRelationManager extends RelationManager
                                 ->columns(3)
                                 ->grid(2)
                                 ->label('詳細資料')
-                                ->collapsible(),
+                                ->collapsible(false),
                         ]),
                         Forms\Components\Section::make([
                             Forms\Components\TextInput::make('mac_address')
