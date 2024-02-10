@@ -37,7 +37,12 @@ class AreaResource extends Resource
 
         $organizationId = $user?->organization_id === null ? $user?->id : $user?->organization_id;
 
-        return parent::getEloquentQuery()->where('organization_id', $organizationId);
+        // 使用者有被分配到場域
+        return parent::getEloquentQuery()->where('organization_id', $organizationId)->when(! $user->hasRole('admin'), function ($query) use ($user) {
+            $userHasAreas = $user->areas->pluck('id')->toArray();
+
+            return $query->whereIn('id', $userHasAreas);
+        });
     }
 
     public static function form(Form $form): Form
